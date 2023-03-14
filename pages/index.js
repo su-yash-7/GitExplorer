@@ -3,9 +3,64 @@ import Header from "../components/Header";
 import Github from "../components/GitHub";
 import Select from "react-tailwindcss-select";
 import { useState } from "react";
+import { optionsFirst, optionsSecond, optionsThird } from "./../data";
+import Typist from "react-typist";
+
 export default function Home() {
+  const [firstOption, setFirstOption] = useState(null);
+  const [secondOption, setSecondOption] = useState(null);
+  const [thirdOption, setThirdOption] = useState(null);
+  const [showSecond, setShowSecond] = useState(false);
+  const [showThird, setShowThird] = useState(false);
+  const [nb, setNb] = useState("");
+  const [usage, setUsage] = useState("");
+
+  function onFirstChange(selectedOption) {
+    if (secondOption) {
+      setFirstOption(selectedOption);
+      setShowSecond(true);
+      setSecondOption(null);
+      setShowThird(false);
+      setNb("");
+      setUsage("");
+    } else if (optionsSecond[selectedOption.value].length === 1) {
+      setFirstOption(selectedOption);
+      setShowSecond(true);
+      onSecondChange(optionsSecond[selectedOption.value][0]);
+    } else {
+      setFirstOption(selectedOption);
+      setShowSecond(true);
+    }
+  }
+  function onSecondChange(selectedOption) {
+    if (selectedOption.usage) {
+      setSecondOption(selectedOption);
+      setShowThird(false);
+      setNb(selectedOption.nb);
+      setUsage(selectedOption.usage);
+      setThirdOption(null);
+    } else if (optionsThird[selectedOption.value].length === 1) {
+      setSecondOption(selectedOption);
+      setShowThird(true);
+      setThirdOption(null);
+      setNb("");
+      setUsage("");
+      onThirdChange(optionsThird[selectedOption.value][0]);
+    } else {
+      setSecondOption(selectedOption);
+      setShowThird(true);
+      setThirdOption(null);
+      setNb("");
+      setUsage("");
+    }
+  }
+  function onThirdChange(selectedOption) {
+    setThirdOption(selectedOption);
+    setNb(selectedOption.nb);
+    setUsage(selectedOption.usage);
+  }
   return (
-    <div className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center py-2">
+    <div className="flex flex-col items-center justify-center max-w-5xl min-h-screen py-2 mx-auto">
       <Head>
         <title>Git Command Explorer</title>
         <link rel="icon" href="/favicon.ico" />
@@ -61,9 +116,9 @@ export default function Home() {
         </svg>
       </div>
       <Header />
-      <main className="mt-12 flex w-full flex-1 flex-col items-center justify-center px-4 text-center sm:mt-20">
+      <main className="flex flex-col items-center flex-1 w-full px-4 mt-12 text-center sm:mt-20">
         <a
-          className="mb-5 flex max-w-fit items-center justify-center space-x-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm text-gray-600 shadow-md transition-colors hover:bg-gray-100"
+          className="flex items-center justify-center px-4 py-2 mb-5 space-x-2 text-sm text-gray-600 transition-colors bg-white border border-gray-300 rounded-full shadow-md max-w-fit hover:bg-gray-100"
           href="https://github.com/su-yash-7/"
           target="_blank"
           rel="noopener noreferrer"
@@ -78,12 +133,112 @@ export default function Home() {
           {" "}
           Find the right commands you need without digging through the web.
         </p>
-        <div className="w-full max-w-xl">
-          <div className="mt-10 flex items-center space-x-3">
-            <p className="text-left text-2xl font-bold">I want to:</p>
+        <div className="w-full max-w-lg">
+          <div className="flex items-center mt-10 space-x-3">
+            <p className="text-2xl font-bold text-left">I want to:</p>
+          </div>
+          <div className="flex flex-col items-center justify-center max-w-lg mx-auto mt-5 space-y-8">
+            <Select
+              placeholder="..."
+              value={firstOption}
+              options={optionsFirst}
+              onChange={onFirstChange}
+              classNames={{
+                menuButton: ({ isDisabled }) =>
+                  `pl-3 flex text-sm text-gray-700 border border-gray-300 cursor-pointer rounded shadow-sm transition ease-in--out duration-100 focus:outline-none ${
+                    isDisabled
+                      ? "bg-gray-200"
+                      : "bg-white hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-black "
+                  }`,
+                menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700 ",
+                listItem: ({ isSelected }) =>
+                  `block transition duration-200 px-4 py-2 cursor-pointer select-none w-full text-left flex items-center space-x-3 justify-between
+                    ${
+                      isSelected
+                        ? `text-gray-700 bg-gray-200`
+                        : `text-gray-700 hover:bg-gray-100 hover:text-gray-900`
+                    }`,
+              }}
+            />
+            {showSecond ? (
+              <Select
+                placeholder="..."
+                value={secondOption}
+                options={optionsSecond[firstOption.value]}
+                onChange={onSecondChange}
+                classNames={{
+                  menuButton: ({ isDisabled }) =>
+                    `pl-3 flex text-sm text-gray-700 border border-gray-300 cursor-pointer rounded shadow-sm transition ease-in--out duration-100 focus:outline-none ${
+                      isDisabled
+                        ? "bg-gray-200"
+                        : "bg-white hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-black "
+                    }`,
+                  menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700 ",
+                  listItem: ({ isSelected }) =>
+                    `block transition duration-200 px-4 py-2 cursor-pointer select-none w-full text-left flex items-center space-x-3 justify-between
+                    ${
+                      isSelected
+                        ? `text-gray-700 bg-gray-200`
+                        : `text-gray-700 hover:bg-gray-100 hover:text-gray-900`
+                    }`,
+                }}
+              />
+            ) : null}
+            {showThird ? (
+              <Select
+                placeholder="..."
+                onChange={onThirdChange}
+                value={thirdOption}
+                options={optionsThird[secondOption.value]}
+                classNames={{
+                  menuButton: ({ isDisabled }) =>
+                    `pl-3 flex text-sm text-gray-700 border border-gray-300 cursor-pointer rounded shadow-sm transition ease-in--out duration-100 focus:outline-none ${
+                      isDisabled
+                        ? "bg-gray-200"
+                        : "bg-white hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-black "
+                    }`,
+                  menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700 ",
+                  listItem: ({ isSelected }) =>
+                    `block transition duration-200 px-4 py-2 cursor-pointer select-none w-full text-left flex items-center space-x-3 justify-between
+                    ${
+                      isSelected
+                        ? `text-gray-700 bg-gray-200`
+                        : `text-gray-700 hover:bg-gray-100 hover:text-gray-900`
+                    }`,
+                }}
+              />
+            ) : null}
           </div>
         </div>
-        <div></div>
+
+        {usage && (
+          <>
+            <div className="w-full max-w-lg mt-10 mb-5 space-y-10">
+              <p className="text-2xl font-bold text-left">Usage</p>
+            </div>
+            <div className="flex flex-col items-center justify-center max-w-lg mx-auto space-y-6">
+              <div className="p-4 transition bg-white border shadow-md cursor-copy rounded-xl hover:bg-gray-100">
+                <Typist avgTypingDelay={50} cursor={{ show: false }}>
+                  Usage Created wjkcn e c c ewchwehc wechco wochn owehc wjh
+                </Typist>
+              </div>
+            </div>
+          </>
+        )}
+        {nb && (
+          <>
+            <div className="w-full max-w-lg mt-10 mb-5 space-y-10">
+              <p className="text-2xl font-bold text-left">Note</p>
+            </div>
+            <div className="flex flex-col items-center justify-center max-w-lg mx-auto space-y-8">
+              <div className="p-4 transition bg-white border shadow-md rounded-xl hover:bg-gray-100">
+                <Typist avgTypingDelay={50} cursor={{ show: false }}>
+                  Usage Created wjkcn e c c ewchwehc wechco wochn owehc wjh
+                </Typist>
+              </div>
+            </div>
+          </>
+        )}
       </main>
     </div>
   );
