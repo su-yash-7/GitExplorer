@@ -14,8 +14,8 @@
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-tailwindcss-select": "^1.8.3",
-    "react-typist": "^2.0.5"
+    "react-hot-toast": "^2.4.0",
+    "react-tailwindcss-select": "^1.8.3"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

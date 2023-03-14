@@ -5,7 +5,7 @@ import Github from "../components/GitHub";
 import Select from "react-tailwindcss-select";
 import { useState } from "react";
 import { optionsFirst, optionsSecond, optionsThird } from "./../data";
-import Typist from "react-typist";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function Home() {
   const [firstOption, setFirstOption] = useState(null);
@@ -211,17 +211,27 @@ export default function Home() {
             ) : null}
           </div>
         </div>
-
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          toastOptions={{ duration: 2000 }}
+        />
         {usage && (
           <>
             <div className="w-full max-w-lg mt-10 mb-5 space-y-10">
               <p className="text-2xl font-bold text-left">Usage</p>
             </div>
             <div className="flex flex-col items-center justify-center max-w-lg mx-auto space-y-6">
-              <div className="p-4 transition bg-white border shadow-md cursor-copy rounded-xl hover:bg-gray-100">
-                <Typist avgTypingDelay={50} cursor={{ show: false }}>
-                  Usage Created wjkcn e c c ewchwehc wechco wochn owehc wjh
-                </Typist>
+              <div
+                className="p-4 transition bg-white border shadow-md cursor-copy rounded-xl hover:bg-gray-100"
+                onClick={() => {
+                  navigator.clipboard.writeText(usage);
+                  toast("Copied to clipboard", {
+                    icon: "✂️",
+                  });
+                }}
+              >
+                <p>{usage}</p>
               </div>
             </div>
           </>
@@ -233,9 +243,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col items-center justify-center max-w-lg mx-auto space-y-8">
               <div className="p-4 transition bg-white border shadow-md rounded-xl hover:bg-gray-100">
-                <Typist avgTypingDelay={50} cursor={{ show: false }}>
-                  Usage Created wjkcn e c c ewchwehc wechco wochn owehc wjh
-                </Typist>
+                <p>{nb}</p>
               </div>
             </div>
           </>
