@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import Github from "../components/GitHub";
 import Select from "react-tailwindcss-select";
 import { useState } from "react";
@@ -240,6 +241,7 @@ export default function Home() {
           </>
         )}
       </main>
+      <Footer />
     </div>
   );
 }
