@@ -120,7 +120,7 @@ export default function Home() {
       <main className="flex flex-col items-center flex-1 w-full px-4 mt-12 text-center sm:mt-20">
         <a
           className="flex items-center justify-center px-4 py-2 mb-5 space-x-2 text-sm text-gray-600 transition-colors bg-white border border-gray-300 rounded-full shadow-md max-w-fit hover:bg-gray-100"
-          href="https://github.com/su-yash-7/"
+          href="https://github.com/su-yash-7/GitExplorer"
           target="_blank"
           rel="noopener noreferrer"
         >
