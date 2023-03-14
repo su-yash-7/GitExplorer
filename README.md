@@ -1,38 +1,157 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# [GitExplorer](https://gitexplorer.skp.dev/)
 
-## Getting Started
+### Find the right commands you need without digging through the web.
 
-First, run the development server:
+Website: [GitExplorer](https://gitexplorer.skp.dev/)
+Explore and Enjoy!
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+You can reach me on via [twitter](https://twitter.com/su_yash_7)
+
+### Tech Stack
+
+- Next.js
+- Tailwindcss
+
+### Installation
+
+Clone the repo via
+
+```
+git clone https://github.com/su-yash-7/GitExplorer.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Install all dependencies
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```
+ yarn
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Then, run the application in the command line and it will be available at `http://localhost:3000`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```
+yarn run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Contribute
 
-## Learn More
+Thank you for contributing to GitExplorer!
 
-To learn more about Next.js, take a look at the following resources:
+Please follow the below instructions to send a Pull Request (Search the website to make sure that this command doesn't already exist).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The data folder (inside the src directory) is where you will be operating from. The three files you should be concerned with are the `primary-options.js`, `secondary-options.js` and `tertiary-options.js` files.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+These three files are responsible for the options a user can pick.
 
-## Deploy on Vercel
+`primary-options.js` contains an array of objects responsible for the options of the first select box.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`secondary-options.js` contains an object. This object houses an arrays of objects, this is responsible for the second set of options a user sees when they select a primary option.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+`tertiary-option.js` file is responsible for cases where there needs to be a third & final select box.
+
+###### Steps to add a new command
+
+0. Please ensure you are not on the master branch. Checkout to a new branch entirely.
+
+1. Add an object to the array in the `primary-options.js` file. Sample Format:
+
+```
+
+{ value: 'show', label: 'show/view' }
+
+```
+
+2. Add an array to the `secondary-options` file. Sample Format:
+
+```
+
+show: [
+
+{
+
+value: 'repo-status',
+
+label: 'status of project including staged, unstaged and untracked files',
+
+usage: 'git status'
+
+nb: 'To know about this command, "run git status --help"'
+
+},
+
+{
+
+value: 'logs',
+
+label: 'commit logs/history'
+
+},
+
+```
+
+The `nb` is optional. It is responsible for what the user sees in the notes section.
+
+`\n` is used to insert newline.
+
+3. To add tertiary options, remove the `usage` and `nb` key/value pair for that command in the `secondary-options.js` file e.g..
+
+```
+
+show: [
+
+{
+
+value: 'logs',
+
+label: 'commit logs/history'
+
+},
+
+```
+
+then supply `tertiary-options.js` file the necessary data e.g.
+
+```
+
+logs: [
+
+{
+
+value: 'all',
+
+label: 'all',
+
+usage: 'git log',
+
+nb: 'Type q in the terminal to exit the logs'
+
+},
+
+{
+
+value: 'last-n-commit',
+
+label: 'for last xxx number of commits',
+
+usage: 'git log -n',
+
+nb: 'Replace n with number of commits e.g. git log -2'
+
+},
+
+{
+
+value: 'particular-period',
+
+label: 'since a particular period',
+
+usage: 'git log --since=period',
+
+nb: 'Replace period with intended timeframe e.g git log --since=3days. You can use dates like 2018-12-31.\n\n Similar flags are --until, --before, --after'
+
+}
+
+]
+
+```
+
+4. Once you are done, add, commit, push and create a PR to Main.
